@@ -1,0 +1,46 @@
+name: Bug report
+description: Something isn't working as documented
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Minimal config/request that triggers it. Redact API keys.
+      placeholder: |
+        1. PROVIDER=... env / Config{...}
+        2. POST /v1/chat/completions with {...}
+        3. Observe ...
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: How are you running it?
+      options:
+        - Go package (library)
+        - Standalone binary
+        - Docker / Compose
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Release tag, image tag, or commit SHA.
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Server logs around the failure (they are structured JSON). Redact secrets.
+      render: shell
