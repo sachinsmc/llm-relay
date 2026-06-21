@@ -160,6 +160,41 @@ stream, err := svc.StartStream(ctx, "user-123", reqBody)
 chi, echo, or gin (`gin.WrapH`). Full API on
 [pkg.go.dev](https://pkg.go.dev/github.com/sachinsmc/llm-relay/relay).
 
+## Use with an AI coding agent
+
+Paste the block below into an LLM/coding agent (Claude, Cursor, Copilot, or any
+MCP-enabled assistant) to have it wire `llm-relay` into your project correctly:
+
+```text
+Use github.com/sachinsmc/llm-relay to put an OpenAI-compatible LLM gateway in
+front of my app. Facts about it:
+
+- It is a thin proxy: it accepts a standard OpenAI chat-completions request at
+  POST /v1/chat/completions and streams the response back as SSE.
+- It keeps the provider API key and model server-side; clients never see them.
+  The relay overrides the request's "model" field with the server-configured one.
+- It supports multi-provider failover (primary then fallbacks) on network
+  error / 408 / 429 / 5xx. 4xx is surfaced, not failed over.
+- Per-user daily quota: pass an "X-User-Id" header (or a custom user func in the
+  library). A "turn" = one fresh user message; tool-result continuations don't
+  recount.
+- Built-in provider names: openai, openrouter, groq, cerebras, gemini, together,
+  fireworks, deepseek, mistral. Any other OpenAI-compatible endpoint works by
+  setting <NAME>_BASE_URL.
+
+Run it one of these ways:
+- Docker:  docker run -p 8080:8080 -e PROVIDER=groq -e GROQ_API_KEY=... \
+           -e GROQ_MODEL=llama-3.3-70b-versatile ghcr.io/sachinsmc/llm-relay:latest
+- Binary:  go install github.com/sachinsmc/llm-relay/cmd/llm-relay@latest
+- Go lib:  import "github.com/sachinsmc/llm-relay/relay"; relay.New(relay.Config{...})
+           then mount svc.Handler() on any router.
+
+Then point my existing OpenAI client at the relay by changing only its base_url
+to http://localhost:8080/v1 (api_key can be any non-empty string). Keep streaming
+on. Read the env config table and Go API at
+https://pkg.go.dev/github.com/sachinsmc/llm-relay/relay before writing code.
+```
+
 ## Configuration
 
 The standalone server is configured entirely from the environment:
