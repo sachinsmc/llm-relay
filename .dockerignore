@@ -1,0 +1,13 @@
+.git
+.github
+*.md
+.env
+.env.*
+!.env.example
+bin/
+llm-relay
+*.test
+*.out
+.DS_Store
+.idea/
+.vscode/
