@@ -71,6 +71,30 @@ PROVIDER=groq GROQ_API_KEY=$GROQ_API_KEY GROQ_MODEL=llama-3.3-70b-versatile \
 # llm-relay listening on :8080
 ```
 
+### Run locally from source (no Docker)
+
+Requires Go 1.26+. Clone, set your env, and run:
+
+```sh
+git clone https://github.com/sachinsmc/llm-relay
+cd llm-relay
+cp .env.example .env          # fill in PROVIDER + its <NAME>_API_KEY / <NAME>_MODEL
+
+# load .env into the shell, then run
+set -a; . ./.env; set +a
+go run ./cmd/llm-relay        # or: make run
+# llm-relay listening on :8080
+```
+
+Or pass the config inline without a file:
+
+```sh
+PROVIDER=groq GROQ_API_KEY=$GROQ_API_KEY GROQ_MODEL=llama-3.3-70b-versatile \
+  go run ./cmd/llm-relay
+```
+
+Check it's up: `curl localhost:8080/healthz` → `ok`.
+
 ### Point any OpenAI client at it
 
 The relay exposes the standard `POST /v1/chat/completions` route, so existing
