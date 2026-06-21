@@ -1,0 +1,20 @@
+# Binaries
+/llm-relay
+/bin/
+*.exe
+*.test
+*.out
+
+# Go
+/vendor/
+coverage.txt
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
