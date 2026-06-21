@@ -45,13 +45,21 @@ client (OpenAI SDK)  ──POST /v1/chat/completions──►  llm-relay  ──
 
 ### Run with Docker
 
+Pull the prebuilt multi-arch image from GHCR (no build needed):
+
 ```sh
-docker build -t llm-relay .
 docker run --rm -p 8080:8080 \
   -e PROVIDER=groq \
   -e GROQ_API_KEY=$GROQ_API_KEY \
   -e GROQ_MODEL=llama-3.3-70b-versatile \
-  llm-relay
+  ghcr.io/sachinsmc/llm-relay:latest
+```
+
+Or build it yourself:
+
+```sh
+docker build -t llm-relay .
+docker run --rm -p 8080:8080 --env-file .env llm-relay
 ```
 
 Or with Compose (reads a local `.env`):
